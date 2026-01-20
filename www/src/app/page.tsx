@@ -1,15 +1,25 @@
-import { supabase } from "@/lib/supabase";
+'use client';
 
-export default function Home() {
+import { Navigation } from '@/components/layout/navigation';
+import { HeroSection } from '@/components/sections/hero-section';
+import { FeatureSection } from '@/components/sections/feature-section';
+import { WhySection } from '@/components/sections/why-section';
+import { RecentProjectsSection } from '@/components/sections/recent-projects-section';
+import { PartnerSection } from '@/components/sections/partner-section';
+import { CTASection } from '@/components/sections/cta-section';
+import { Footer } from '@/components/sections/footer';
+
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <h1 className="text-3xl font-bold">
-        여기가 랜딩페이지
-      </h1>
-
-      <p className="mt-4 text-gray-500">
-        헤이트슬롭 동아리 소개 사이트입니다.
-      </p>
-    </div>
+    <main className="min-h-screen">
+      <Navigation />
+      <HeroSection />
+      <FeatureSection />
+      <WhySection />
+      <RecentProjectsSection />
+      <PartnerSection />
+      <CTASection />
+      <Footer />
+    </main>
   );
 }
