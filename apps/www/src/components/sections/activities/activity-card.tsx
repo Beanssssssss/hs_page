@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 
@@ -9,6 +10,8 @@ interface ActivityCardProps {
   description?: string;
   date: string;
   imageUrl: string;
+  index?: number;
+  shouldAnimate?: boolean;
 }
 
 const bgColors: Record<number, string> = {
@@ -26,13 +29,38 @@ export function ActivityCard({
   description,
   date,
   imageUrl,
+  index = 0,
+  shouldAnimate = false,
 }: ActivityCardProps) {
   const bgColor = bgColors[id % 6];
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (shouldAnimate) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, index * 100);
+
+      return () => clearTimeout(timer);
+    } else {
+      setIsVisible(true);
+    }
+  }, [shouldAnimate, index]);
 
   return (
     <Link href={`/activities/${id}`}>
-      <Card className="border-0 shadow-md hover:shadow-xl transition-all cursor-pointer group overflow-hidden rounded-3xl">
-        <CardContent className="p-0">
+      <Card
+        className={`border-0 shadow-md hover:shadow-xl cursor-pointer group overflow-hidden rounded-3xl h-full flex flex-col transition-all duration-700 ease-out ${
+          shouldAnimate
+            ? `${
+                isVisible
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-8'
+              }`
+            : ''
+        }`}
+      >
+        <CardContent className="p-0 flex flex-col flex-1">
           <div className={`${bgColor} aspect-video flex items-center justify-center overflow-hidden`}>
             <img
               src={imageUrl}

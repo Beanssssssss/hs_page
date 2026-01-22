@@ -1,10 +1,47 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { Text } from '@/components/ui/text';
 
 export function FeatureSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="w-full bg-white">
+    <section
+      ref={sectionRef}
+      className={`w-full bg-white transition-all duration-1000 ease-out ${
+        isVisible
+          ? 'opacity-100 translate-y-0'
+          : 'opacity-0 translate-y-12'
+      }`}
+    >
       {/* Container: Max Width 1350, Gap 94, Padding 0 30 */}
       <div className="w-full max-w-[1350px] mx-auto flex flex-col items-center justify-center gap-[94px] px-[30px]">
         

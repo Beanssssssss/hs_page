@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Text } from '@/components/ui/text';
 import { Card, CardContent } from '@/components/ui/card';
@@ -26,13 +27,52 @@ const features = [
 ];
 
 export function WhySection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [cardsVisible, setCardsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            // 카드들은 순차적으로 나타나도록
+            setTimeout(() => setCardsVisible(true), 200);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="w-full flex flex-col justify-center items-center py-[101px] gap-[10px] overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="w-full flex flex-col justify-center items-center py-[101px] gap-[10px] overflow-hidden"
+    >
       {/* Container: Max Width 1200 (네비게이션과 동일), Gap 41, Padding 0 30 */}
       <div className="w-full max-w-[1200px] flex flex-col justify-center items-center px-[30px] gap-[41px] overflow-visible">
         
         {/* Section Title: Max Width 600, Gap 20, Padding 0 */}
-        <div className="w-full max-w-[600px] flex flex-col justify-center items-center gap-[20px] p-0 overflow-hidden">
+        <div className={`w-full max-w-[600px] flex flex-col justify-center items-center gap-[20px] p-0 overflow-hidden transition-all duration-700 ease-out ${
+          isVisible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-8'
+        }`}>
           {/* Heading 3: 40px, Weight 600, Letter -0.04em */}
           <Text 
             variant="heading3" 
@@ -52,13 +92,18 @@ export function WhySection() {
             gridAutoRows: 'minmax(0, 1fr)',
           }}
         >
-          {features.map((feature) => {
+          {features.map((feature, index) => {
             return (
               <div
                 key={feature.id}
-                className="w-[360px] flex flex-col justify-start items-start p-[6px] gap-0 rounded-[30px] bg-white overflow-hidden"
+                className={`w-[360px] flex flex-col justify-start items-start p-[6px] gap-0 rounded-[30px] bg-white overflow-hidden transition-all duration-700 ease-out ${
+                  cardsVisible
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-8'
+                }`}
                 style={{
                   boxShadow: '0px 4px 30px 0px rgba(45, 30, 133, 0.1)',
+                  transitionDelay: cardsVisible ? `${index * 150}ms` : '0ms',
                 }}
               >
                 {/* Feature Image: 300px, Aspect 1.16/1, Border-radius 25px */}
