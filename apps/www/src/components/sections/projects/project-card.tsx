@@ -1,6 +1,7 @@
 'use client';
 
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import type { ProjectType } from '@/types/project';
 
@@ -32,23 +33,27 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const bgColor = bgColors[id % 6];
   return (
-    <Link href={`/projects/${id}`}>
-      <Card className="border-0 shadow-md hover:shadow-xl transition-all cursor-pointer group overflow-hidden rounded-3xl">
-        <CardContent className="p-0">
-          <div className={`${bgColor} aspect-video flex items-center justify-center overflow-hidden`}>
+    <Link href={`/projects/${id}`} className="h-full block">
+      <Card className="border-0 shadow-md hover:shadow-xl transition-all cursor-pointer group overflow-hidden rounded-3xl h-full flex flex-col">
+        <CardContent className="p-0 flex flex-col flex-1">
+          <div className={`${bgColor} aspect-video flex items-center justify-center overflow-hidden flex-shrink-0`}>
             <img
               src={thumbnailUrl}
               alt={title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </div>
-          <div className="p-6">
-            {generation && (
-              <p className="text-sm text-gray-500 mb-2">{generation}</p>
-            )}
-            <h3 className="text-xl font-bold mb-2 group-hover:text-purple-600 transition-colors">
-              {title}
-            </h3>
+          <div className="p-6 flex flex-col flex-1">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
+              <h3 className="text-xl font-bold group-hover:text-purple-600 transition-colors">
+                {title}
+              </h3>
+              {generation && (
+                <Badge variant="outline" className="text-xs font-medium flex-shrink-0">
+                  {generation}
+                </Badge>
+              )}
+            </div>
             {summary && (
               <p className="text-gray-600 text-sm line-clamp-2">{summary}</p>
             )}

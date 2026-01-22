@@ -11,6 +11,7 @@ export interface ProjectDetail {
   description: string;
   github_url: string | null;
   demo_url: string | null;
+  youtube_url: string | null;
 }
 
 export interface Generation {
@@ -21,6 +22,7 @@ export interface Project {
   id: number;
   title: string;
   summary: string;
+  description?: string | null;
   project_type: ProjectType;
   thumbnail_url: string;
   generations: Generation[];

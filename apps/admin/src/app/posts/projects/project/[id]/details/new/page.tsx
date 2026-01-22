@@ -5,7 +5,6 @@ import { useRouter, useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 export default function ProjectDetailNewPage() {
   const supabase = createClient();
@@ -15,25 +14,20 @@ export default function ProjectDetailNewPage() {
   const projectId = Number(params.id);
 
   const [saving, setSaving] = useState(false);
-  const [description, setDescription] = useState("");
   const [githubUrl, setGithubUrl] = useState("");
   const [demoUrl, setDemoUrl] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
 
   const handleSubmit = async () => {
-    if (!description) {
-      alert("설명을 입력하세요.");
-      return;
-    }
-
     setSaving(true);
 
     const { error } = await supabase
       .from("project_details")
       .insert({
         project_id: projectId,
-        description,
         github_url: githubUrl || null,
         demo_url: demoUrl || null,
+        youtube_url: youtubeUrl || null,
       });
 
     setSaving(false);
@@ -52,15 +46,6 @@ export default function ProjectDetailNewPage() {
       <h1 className="text-2xl font-bold">상세 정보 추가</h1>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">설명</label>
-        <Textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={6}
-        />
-      </div>
-
-      <div className="space-y-2">
         <label className="text-sm font-medium">GitHub URL</label>
         <Input
           value={githubUrl}
@@ -75,6 +60,15 @@ export default function ProjectDetailNewPage() {
           value={demoUrl}
           onChange={(e) => setDemoUrl(e.target.value)}
           placeholder="https://..."
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">YouTube URL</label>
+        <Input
+          value={youtubeUrl}
+          onChange={(e) => setYoutubeUrl(e.target.value)}
+          placeholder="https://www.youtube.com/..."
         />
       </div>
 

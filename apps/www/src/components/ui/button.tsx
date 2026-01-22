@@ -12,6 +12,7 @@ const buttonVariants = cva(
         default: "bg-primary text-primary-foreground hover:bg-primary/90 rounded-full",
         cta: "bg-black text-white hover:bg-gray-800 rounded-full",
         purple: "bg-purple-600 text-white hover:bg-purple-700 rounded-full shadow-lg",
+        red: "bg-red-600 text-white hover:bg-red-700 rounded-full shadow-lg",
         dark: "text-white rounded-[30px] shadow-[0_3px_14px_0px_rgba(16,16,17,0.6)] border border-[#101011]",
         primary: "text-white rounded-[30px] shadow-[0_6px_20px_0px_rgba(82,53,239,0.6)] border border-[#5235ef]",
       },

@@ -5,7 +5,6 @@ import { useRouter, useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 export default function ProjectDetailEditPage() {
   const supabase = createClient();
@@ -18,9 +17,9 @@ export default function ProjectDetailEditPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  const [description, setDescription] = useState("");
   const [githubUrl, setGithubUrl] = useState("");
   const [demoUrl, setDemoUrl] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
 
   useEffect(() => {
     const loadDetail = async () => {
@@ -37,9 +36,9 @@ export default function ProjectDetailEditPage() {
         return;
       }
 
-      setDescription(data.description ?? "");
       setGithubUrl(data.github_url ?? "");
       setDemoUrl(data.demo_url ?? "");
+      setYoutubeUrl(data.youtube_url ?? "");
       setLoading(false);
     };
 
@@ -47,19 +46,14 @@ export default function ProjectDetailEditPage() {
   }, [detailId, projectId, router, supabase]);
 
   const handleUpdate = async () => {
-    if (!description) {
-      alert("설명을 입력하세요.");
-      return;
-    }
-
     setSaving(true);
 
     const { error } = await supabase
       .from("project_details")
       .update({
-        description,
         github_url: githubUrl || null,
         demo_url: demoUrl || null,
+        youtube_url: youtubeUrl || null,
       })
       .eq("id", detailId);
 
@@ -83,15 +77,6 @@ export default function ProjectDetailEditPage() {
       <h1 className="text-2xl font-bold">상세 정보 수정</h1>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">설명</label>
-        <Textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={6}
-        />
-      </div>
-
-      <div className="space-y-2">
         <label className="text-sm font-medium">GitHub URL</label>
         <Input
           value={githubUrl}
@@ -104,6 +89,15 @@ export default function ProjectDetailEditPage() {
         <Input
           value={demoUrl}
           onChange={(e) => setDemoUrl(e.target.value)}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">YouTube URL</label>
+        <Input
+          value={youtubeUrl}
+          onChange={(e) => setYoutubeUrl(e.target.value)}
+          placeholder="https://www.youtube.com/..."
         />
       </div>
 
