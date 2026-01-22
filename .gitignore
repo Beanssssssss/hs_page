@@ -29,7 +29,8 @@ pnpm-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
-
+**/.env.local
+**/.env
 # Vercel
 .vercel
 
@@ -45,3 +46,13 @@ next-env.d.ts
 
 # EasyNext specific (if any)
 .easynext
+
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
