@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ProjectCard } from './project-card';
 import { supabase } from '@/lib/supabase';
@@ -27,11 +27,74 @@ export function ProjectGridSection() {
   const [generations, setGenerations] = useState<Generation[]>([]);
   const [loading, setLoading] = useState(true);
   const [displayCount, setDisplayCount] = useState(6);
+  const [gridVisible, setGridVisible] = useState(false);
+  const [previousDisplayCount, setPreviousDisplayCount] = useState(6);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchProjects();
     fetchGenerations();
   }, []);
+
+  // 카테고리나 기수 변경 시 초기화
+  useEffect(() => {
+    setPreviousDisplayCount(6);
+    setDisplayCount(6);
+  }, [selectedCategory, selectedGenerationId]);
+
+  useEffect(() => {
+    // 카테고리나 기수가 변경되면 전체 애니메이션 초기화
+    const isFilterChange = displayCount <= previousDisplayCount;
+    
+    if (isFilterChange) {
+      setGridVisible(false);
+    }
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setGridVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px',
+      }
+    );
+
+    // 약간의 지연 후 observer 시작 (DOM 업데이트 대기)
+    const timer = setTimeout(() => {
+      if (gridRef.current) {
+        // 이미 뷰포트에 있으면 바로 표시
+        const rect = gridRef.current.getBoundingClientRect();
+        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isInViewport) {
+          setGridVisible(true);
+        } else {
+          observer.observe(gridRef.current);
+        }
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      if (gridRef.current) {
+        observer.unobserve(gridRef.current);
+      }
+      observer.disconnect();
+    };
+  }, [displayCount, selectedCategory, selectedGenerationId, projects, previousDisplayCount]);
+
+  // displayCount가 증가할 때만 previousDisplayCount 업데이트
+  useEffect(() => {
+    if (displayCount > previousDisplayCount) {
+      setPreviousDisplayCount(displayCount);
+    }
+  }, [displayCount, previousDisplayCount]);
 
   const fetchProjects = async () => {
     try {
@@ -190,11 +253,18 @@ export function ProjectGridSection() {
           </div>
         ) : (
           <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 auto-rows-fr">
-              {displayedProjects.map((project) => {
+            <div 
+              ref={gridRef}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 auto-rows-fr"
+            >
+              {displayedProjects.map((project, index) => {
                 const generationName = Array.isArray(project.generations)
                   ? project.generations[0]?.name
                   : (project.generations as any)?.name;
+                
+                // Load More로 추가된 카드만 애니메이션 적용
+                const shouldAnimate = gridVisible && index >= previousDisplayCount;
+                const animationIndex = index - previousDisplayCount; // 새로 추가된 카드의 상대 인덱스
                 
                 return (
                   <ProjectCard
@@ -205,6 +275,9 @@ export function ProjectGridSection() {
                     generation={generationName}
                     thumbnailUrl={project.thumbnail_url}
                     projectType={project.project_type}
+                    index={shouldAnimate ? animationIndex : index}
+                    shouldAnimate={shouldAnimate}
+                    isNewCard={index >= previousDisplayCount}
                   />
                 );
               })}

@@ -1,14 +1,49 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export function CTASection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section 
-      className="w-full"
+    <section
+      ref={sectionRef}
+      className={`w-full transition-all duration-1000 ease-out ${
+        isVisible
+          ? 'opacity-100 translate-y-0'
+          : 'opacity-0 translate-y-12'
+      }`}
       style={{
         background: 'linear-gradient(180deg, #ffffff 0.45%, rgba(135, 113, 255, 0.3) 24.32%, rgba(135, 113, 255, 0.3) 100%)'
       }}

@@ -1,11 +1,24 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { Text } from '@/components/ui/text';
 
 export function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true); // Hero는 바로 나타나도록
+  }, []);
+
   return (
     <section 
-      className="w-full min-h-screen flex flex-col justify-center items-center pt-20 gap-[10px] overflow-visible"
+      ref={sectionRef}
+      className={`w-full min-h-screen flex flex-col justify-center items-center pt-20 gap-[10px] overflow-visible transition-all duration-1000 ease-out ${
+        isVisible
+          ? 'opacity-100 translate-y-0'
+          : 'opacity-0 translate-y-12'
+      }`}
       style={{
         background: 'linear-gradient(180deg, #ffffff 0%, #ffffff 15%, rgba(135, 113, 255, 0.3) 35%, rgba(135, 113, 255, 0.3) 78.83%, rgb(255, 255, 255) 100%)'
       }}

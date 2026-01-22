@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ActivityCard } from './activity-card';
 
@@ -72,8 +72,49 @@ const activities = [
 
 export function ActivityGridSection() {
   const [displayCount, setDisplayCount] = useState(6);
+  const [gridVisible, setGridVisible] = useState(false);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const displayedActivities = activities.slice(0, displayCount);
+
+  useEffect(() => {
+    setGridVisible(false);
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setGridVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px',
+      }
+    );
+
+    const timer = setTimeout(() => {
+      if (gridRef.current) {
+        const rect = gridRef.current.getBoundingClientRect();
+        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isInViewport) {
+          setGridVisible(true);
+        } else {
+          observer.observe(gridRef.current);
+        }
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      if (gridRef.current) {
+        observer.unobserve(gridRef.current);
+      }
+    };
+  }, [displayCount]);
 
   const handleLoadMore = () => {
     setDisplayCount((prev) => prev + 6);
@@ -82,9 +123,17 @@ export function ActivityGridSection() {
   return (
     <section className="py-24 bg-gray-50">
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {displayedActivities.map((activity) => (
-            <ActivityCard key={activity.id} {...activity} />
+        <div
+          ref={gridRef}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 auto-rows-fr"
+        >
+          {displayedActivities.map((activity, index) => (
+            <ActivityCard
+              key={activity.id}
+              {...activity}
+              index={index}
+              shouldAnimate={gridVisible}
+            />
           ))}
         </div>
 

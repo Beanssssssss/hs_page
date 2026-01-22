@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
@@ -12,6 +13,9 @@ interface ProjectCardProps {
   generation?: string;
   thumbnailUrl: string;
   projectType: ProjectType;
+  index?: number;
+  shouldAnimate?: boolean;
+  isNewCard?: boolean;
 }
 
 const bgColors: Record<number, string> = {
@@ -30,11 +34,41 @@ export function ProjectCard({
   generation,
   thumbnailUrl,
   projectType,
+  index = 0,
+  shouldAnimate = false,
+  isNewCard = false,
 }: ProjectCardProps) {
   const bgColor = bgColors[id % 6];
+  const cardRef = useRef<HTMLDivElement>(null);
+  const hasAnimatedRef = useRef(false);
+  const [isVisible, setIsVisible] = useState(!isNewCard);
+
+  useEffect(() => {
+    // 새 카드이고 아직 애니메이션하지 않았으면 애니메이션 적용
+    if (shouldAnimate && isNewCard && !hasAnimatedRef.current) {
+      setIsVisible(false);
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+        hasAnimatedRef.current = true;
+      }, index * 80);
+
+      return () => clearTimeout(timer);
+    } else if (!isNewCard) {
+      // 기존 카드는 바로 보이도록
+      setIsVisible(true);
+    }
+  }, [shouldAnimate, index, isNewCard]);
+
   return (
     <Link href={`/projects/${id}`} className="h-full block">
-      <Card className="border-0 shadow-md hover:shadow-xl transition-all cursor-pointer group overflow-hidden rounded-3xl h-full flex flex-col">
+      <Card
+        ref={cardRef}
+        className={`border-0 shadow-md hover:shadow-xl cursor-pointer group overflow-hidden rounded-3xl h-full flex flex-col transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isVisible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-4'
+        }`}
+      >
         <CardContent className="p-0 flex flex-col flex-1">
           <div className={`${bgColor} aspect-video flex items-center justify-center overflow-hidden flex-shrink-0`}>
             <img

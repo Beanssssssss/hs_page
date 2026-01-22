@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { Zap, Layers, Target } from 'lucide-react';
 
 const lessons = [
@@ -24,18 +25,68 @@ const lessons = [
 ];
 
 export function KeyLessonsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [cardsVisible, setCardsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            setTimeout(() => setCardsVisible(true), 200);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="py-24 bg-black text-white">
+    <section
+      ref={sectionRef}
+      className="py-24 bg-black text-white"
+    >
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
-          Key Lessons
-        </h2>
+        <div className={`text-center mb-16 transition-all duration-700 ease-out ${
+          isVisible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-8'
+        }`}>
+          <h2 className="text-4xl md:text-5xl font-bold">
+            Key Lessons
+          </h2>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {lessons.map((lesson) => {
+          {lessons.map((lesson, index) => {
             const IconComponent = lesson.icon;
             return (
-              <div key={lesson.id} className="text-center">
+              <div
+                key={lesson.id}
+                className={`text-center transition-all duration-700 ease-out ${
+                  cardsVisible
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-8'
+                }`}
+                style={{
+                  transitionDelay: cardsVisible ? `${index * 150}ms` : '0ms',
+                }}
+              >
                 <div className="bg-gray-800 rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6">
                   <IconComponent className="w-8 h-8 text-white" />
                 </div>
