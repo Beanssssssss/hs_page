@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ProjectCard } from './project-card';
 import { supabase } from '@/lib/supabase';
 import type { Project, ProjectType } from '@/types/project';
+import { usePageState } from '@/hooks/use-page-state';
 
 type Category = 'all' | 'producer' | 'engineer' | 'chatbot';
 
@@ -20,16 +21,53 @@ interface Generation {
   name: string;
 }
 
+interface ProjectsPageState {
+  selectedCategory: Category;
+  selectedGenerationId: number | null;
+  displayCount: number;
+}
+
 export function ProjectGridSection() {
-  const [selectedCategory, setSelectedCategory] = useState<Category>('all');
-  const [selectedGenerationId, setSelectedGenerationId] = useState<number | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [generations, setGenerations] = useState<Generation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [displayCount, setDisplayCount] = useState(6);
   const [gridVisible, setGridVisible] = useState(false);
   const [previousDisplayCount, setPreviousDisplayCount] = useState(6);
   const gridRef = useRef<HTMLDivElement>(null);
+
+  // 페이지 상태 관리 훅 사용
+  const [pageState, updatePageState, restoreScrollPosition] = usePageState<ProjectsPageState>({
+    storageKey: 'projects-page-state',
+    defaultState: {
+      selectedCategory: 'all',
+      selectedGenerationId: null,
+      displayCount: 6,
+    },
+    restoreScroll: true,
+    scrollRestoreDelay: 300,
+    dependencies: [],
+  });
+
+  const { selectedCategory, selectedGenerationId, displayCount } = pageState;
+
+  // 초기 상태 복원 시 previousDisplayCount도 복원
+  useEffect(() => {
+    setPreviousDisplayCount(displayCount);
+  }, []); // 마운트 시 한 번만
+
+  // 프로젝트 로드 후 스크롤 위치 복원
+  useEffect(() => {
+    if (!loading && projects.length > 0) {
+      restoreScrollPosition();
+    }
+  }, [loading, projects.length, restoreScrollPosition]);
+
+  // displayCount 변경 시 previousDisplayCount 업데이트
+  useEffect(() => {
+    if (displayCount > previousDisplayCount) {
+      setPreviousDisplayCount(displayCount);
+    }
+  }, [displayCount, previousDisplayCount]);
 
   useEffect(() => {
     fetchProjects();
@@ -39,8 +77,8 @@ export function ProjectGridSection() {
   // 카테고리나 기수 변경 시 초기화
   useEffect(() => {
     setPreviousDisplayCount(6);
-    setDisplayCount(6);
-  }, [selectedCategory, selectedGenerationId]);
+    updatePageState({ displayCount: 6 });
+  }, [selectedCategory, selectedGenerationId, updatePageState]);
 
   useEffect(() => {
     // 카테고리나 기수가 변경되면 전체 애니메이션 초기화
@@ -169,7 +207,7 @@ export function ProjectGridSection() {
   const displayedProjects = filteredProjects.slice(0, displayCount);
 
   const handleLoadMore = () => {
-    setDisplayCount((prev) => prev + 6);
+    updatePageState({ displayCount: displayCount + 6 });
   };
 
   if (loading) {
@@ -194,9 +232,11 @@ export function ProjectGridSection() {
               <button
                 key={category.id}
                 onClick={() => {
-                  setSelectedCategory(category.id);
-                  setSelectedGenerationId(null);
-                  setDisplayCount(6);
+                  updatePageState({
+                    selectedCategory: category.id,
+                    selectedGenerationId: null,
+                    displayCount: 6,
+                  });
                 }}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   selectedCategory === category.id
@@ -214,8 +254,10 @@ export function ProjectGridSection() {
             <div className="inline-flex gap-2 bg-white rounded-full p-2 shadow-md">
               <button
                 onClick={() => {
-                  setSelectedGenerationId(null);
-                  setDisplayCount(6);
+                  updatePageState({
+                    selectedGenerationId: null,
+                    displayCount: 6,
+                  });
                 }}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   selectedGenerationId === null
@@ -229,8 +271,10 @@ export function ProjectGridSection() {
                 <button
                   key={generation.id}
                   onClick={() => {
-                    setSelectedGenerationId(generation.id);
-                    setDisplayCount(6);
+                    updatePageState({
+                      selectedGenerationId: generation.id,
+                      displayCount: 6,
+                    });
                   }}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                     selectedGenerationId === generation.id

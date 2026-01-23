@@ -12,6 +12,8 @@ export interface ProjectDetail {
   github_url: string | null;
   demo_url: string | null;
   youtube_url: string | null;
+  engineer: string | null;
+  producer: string | null;
 }
 
 export interface Generation {

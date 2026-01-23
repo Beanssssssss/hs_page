@@ -96,7 +96,7 @@ export default function ProjectsAdminPage() {
                 <div>
                   <CardTitle className="text-xl">{generation.name}</CardTitle>
                   <CardDescription className="mt-1">
-                    {generation.year}년
+                    {generation.year}
                   </CardDescription>
                 </div>
                 <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>

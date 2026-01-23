@@ -20,6 +20,8 @@ export default function ProjectDetailEditPage() {
   const [githubUrl, setGithubUrl] = useState("");
   const [demoUrl, setDemoUrl] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [engineer, setEngineer] = useState("");
+  const [producer, setProducer] = useState("");
 
   useEffect(() => {
     const loadDetail = async () => {
@@ -39,6 +41,8 @@ export default function ProjectDetailEditPage() {
       setGithubUrl(data.github_url ?? "");
       setDemoUrl(data.demo_url ?? "");
       setYoutubeUrl(data.youtube_url ?? "");
+      setEngineer(data.engineer ?? "");
+      setProducer(data.producer ?? "");
       setLoading(false);
     };
 
@@ -54,6 +58,8 @@ export default function ProjectDetailEditPage() {
         github_url: githubUrl || null,
         demo_url: demoUrl || null,
         youtube_url: youtubeUrl || null,
+        engineer: engineer || null,
+        producer: producer || null,
       })
       .eq("id", detailId);
 
@@ -98,6 +104,24 @@ export default function ProjectDetailEditPage() {
           value={youtubeUrl}
           onChange={(e) => setYoutubeUrl(e.target.value)}
           placeholder="https://www.youtube.com/..."
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">엔지니어</label>
+        <Input
+          value={engineer}
+          onChange={(e) => setEngineer(e.target.value)}
+          placeholder="엔지니어 이름 (예: 홍길동, 김철수)"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">프로듀서</label>
+        <Input
+          value={producer}
+          onChange={(e) => setProducer(e.target.value)}
+          placeholder="프로듀서 이름 (예: 이영희, 박민수)"
         />
       </div>
 

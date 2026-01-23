@@ -47,6 +47,24 @@ export default function ProjectDetailEngineer({
         </section>
       )}
 
+      {/* 엔지니어 정보 */}
+      {detail?.engineer && (
+        <div className="flex gap-4">
+          <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200/50 w-[calc(50%-0.5rem)]">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                <span className="text-purple-600 font-bold text-sm">엔</span>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 font-medium">엔지니어</p>
+                <p className="text-base font-semibold text-gray-900">{detail.engineer}</p>
+              </div>
+            </div>
+          </div>
+          <div className="w-[calc(50%-0.5rem)]"></div>
+        </div>
+      )}
+
       {/* 버튼들 */}
       <div className="flex gap-4 flex-wrap">
         {detail?.github_url && (

@@ -1,11 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export const createClient = async () => {
+export async function createClient() {
   const cookieStore = await cookies();
 
-  //TODO : any > 실제 데이터 타입으로 변경 필요
-  return createServerClient<any>(
+  return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -27,4 +26,4 @@ export const createClient = async () => {
       },
     }
   );
-};
+}

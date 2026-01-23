@@ -15,6 +15,7 @@ const buttonVariants = cva(
         red: "bg-red-600 text-white hover:bg-red-700 rounded-full shadow-lg",
         dark: "text-white rounded-[30px] shadow-[0_3px_14px_0px_rgba(16,16,17,0.6)] border border-[#101011]",
         primary: "text-white rounded-[30px] shadow-[0_6px_20px_0px_rgba(82,53,239,0.6)] border border-[#5235ef]",
+        blue: "bg-blue-600 text-white hover:bg-blue-700 rounded-full shadow-lg",
       },
       size: {
         default: "h-10 px-6 py-2 text-sm",

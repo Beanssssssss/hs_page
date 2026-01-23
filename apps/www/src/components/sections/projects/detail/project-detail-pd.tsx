@@ -49,6 +49,24 @@ export default function ProjectDetailPd({
         </section>
       )}
 
+      {/* 프로듀서 정보 */}
+      {detail?.producer && (
+        <div className="flex gap-4">
+          <div className="w-[calc(50%-0.5rem)]"></div>
+          <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-pink-50 to-orange-50 rounded-xl border border-pink-200/50 w-[calc(50%-0.5rem)]">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
+                <span className="text-pink-600 font-bold text-sm">프</span>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 font-medium">프로듀서</p>
+                <p className="text-base font-semibold text-gray-900">{detail.producer}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 버튼들 */}
       {detail?.youtube_url && (
         <div className="flex gap-4">
