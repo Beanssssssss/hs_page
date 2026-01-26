@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
 
 const positions = [
   {
@@ -19,7 +19,7 @@ const positions = [
 export function RecruitPositionsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [cardsVisible, setCardsVisible] = useState(false);
+  const [visibleItems, setVisibleItems] = useState<number[]>([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,7 +27,6 @@ export function RecruitPositionsSection() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            setTimeout(() => setCardsVisible(true), 200);
             observer.unobserve(entry.target);
           }
         });
@@ -48,46 +47,149 @@ export function RecruitPositionsSection() {
     };
   }, []);
 
+  // Stagger animation for items
+  useEffect(() => {
+    if (isVisible) {
+      // Animate position items
+      positions.forEach((_, index) => {
+        setTimeout(() => {
+          setVisibleItems((prev) => [...prev, index]);
+        }, index * 150); // 150ms delay between each item
+      });
+      
+      // Animate icon feature items after position items
+      [1, 2, 3].forEach((_, index) => {
+        setTimeout(() => {
+          setVisibleItems((prev) => [...prev, positions.length + index]);
+        }, (positions.length + index) * 150);
+      });
+    }
+  }, [isVisible]);
+
   return (
     <section
       ref={sectionRef}
-      className="py-24 bg-black text-white"
+      className={`w-full flex flex-col justify-center items-center transition-all duration-1000 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+      }`}
+      style={{
+        padding: '0px 100px',
+        gap: '10px',
+        overflow: 'hidden',
+      }}
     >
-      <div className="container mx-auto px-6">
-        <div className={`text-center mb-16 transition-all duration-700 ease-out ${
-          isVisible
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-8'
-        }`}>
-          <h2 className="text-4xl md:text-5xl font-bold">
+      {/* Section Bg */}
+      <div
+        className="w-full flex flex-row justify-center items-center"
+        style={{
+          padding: '34px 0px',
+          backgroundColor: '#101011',
+          overflow: 'hidden',
+          gap: '10px',
+          borderRadius: '30px',
+        }}
+      >
+        {/* Container */}
+        <div
+          className="flex flex-col justify-center items-center"
+          style={{
+            flex: 1,
+            maxWidth: '1350px',
+            padding: '0px 30px',
+            gap: '44px',
+          }}
+        >
+          {/* Section Title */}
+          <Text variant="heading3" as="h2" className="text-white text-center">
             모집 직군
-          </h2>
-        </div>
+          </Text>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {positions.map((position, index) => (
-            <Card
-              key={position.id}
-              className={`bg-gray-900 border-gray-800 hover:border-gray-700 transition-all duration-700 ease-out ${
-                cardsVisible
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              }`}
-              style={{
-                transitionDelay: cardsVisible ? `${index * 150}ms` : '0ms',
-              }}
-            >
-              <CardContent className="p-8">
-                <div className="bg-gray-800 rounded-2xl h-48 mb-6"></div>
-                <h3 className="text-2xl font-bold mb-4 text-white">
-                  {position.title}
-                </h3>
-                <p className="text-gray-400 leading-relaxed">
-                  {position.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {/* Grid */}
+          <div
+            className="w-full grid"
+            style={{
+              gridTemplateColumns: 'repeat(2, minmax(50px, 1fr))',
+              gap: '10px 30px',
+              overflow: 'hidden',
+            }}
+          >
+            {positions.map((position, index) => (
+              <div 
+                key={position.id} 
+                className={`w-full transition-all duration-700 ease-out ${
+                  visibleItems.includes(index) 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-8'
+                }`}
+              >
+                {/* Feature Box */}
+                <div
+                  className="w-full flex flex-col justify-start items-center"
+                  style={{
+                    padding: '40px',
+                    backgroundColor: '#101011',
+                    overflow: 'hidden',
+                    gap: '30px',
+                    borderRadius: '25px',
+                  }}
+                >
+                  {/* Feature Icon - Placeholder */}
+                  <div className="bg-gray-700 rounded-full w-16 h-16"></div>
+                  
+                  {/* Feature Content */}
+                  <div
+                    className="w-full flex flex-col justify-center items-center"
+                    style={{
+                      padding: '30px',
+                      maxWidth: '600px',
+                      gap: '10px',
+                    }}
+                  >
+                    <Text variant="heading6" as="h3" className="text-white text-center">
+                      {position.title}
+                    </Text>
+                    <Text variant="small" className="text-gray-400 text-center">
+                      {position.description}
+                    </Text>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Key Lessons */}
+          <Text variant="heading4" as="h3" className="text-white">
+            Key Lessons
+          </Text>
+
+          {/* Icon Feature Grid */}
+          <div
+            className="w-full flex flex-row justify-center items-center"
+            style={{
+              gap: '50px',
+            }}
+          >
+            {[1, 2, 3].map((i, index) => (
+              <div
+                key={i}
+                className={`flex flex-col justify-start items-start transition-all duration-700 ease-out ${
+                  visibleItems.includes(positions.length + index)
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-8'
+                }`}
+                style={{
+                  width: '400px',
+                  gap: '30px',
+                }}
+              >
+                {/* Icon Feature - Placeholder */}
+                <div className="bg-gray-700 rounded-lg w-full h-24"></div>
+                <Text variant="medium" className="text-white">
+                  Icon Feature {i}
+                </Text>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Text } from '@/components/ui/text';
 
 export function SloganSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,15 +36,34 @@ export function SloganSection() {
   return (
     <section
       ref={sectionRef}
-      className={`py-32 bg-white transition-all duration-1000 ease-out ${
-        isVisible
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-12'
+      className={`w-full flex flex-col justify-center items-start transition-all duration-1000 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
       }`}
+      style={{
+        padding: '81px 0px 81px 0px',
+        gap: '83px',
+        overflow: 'hidden',
+      }}
     >
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl">
-          <h2 className="text-5xl md:text-6xl font-black mb-8">
+      {/* Container */}
+      <div
+        className="w-full flex flex-col justify-center items-center"
+        style={{
+          maxWidth: '1350px',
+          padding: '0px 30px',
+          gap: '94px',
+        }}
+      >
+        {/* Section Title */}
+        <div
+          className="w-full flex flex-col justify-center items-center"
+          style={{
+            maxWidth: '865px',
+            gap: '51px',
+            overflow: 'hidden',
+          }}
+        >
+          <Text variant="heading2" as="h2" className="text-center">
             Prompt the
             <br />
             Future,
@@ -52,7 +72,7 @@ export function SloganSection() {
             Be the
             <br />
             Pioneer
-          </h2>
+          </Text>
         </div>
       </div>
     </section>
