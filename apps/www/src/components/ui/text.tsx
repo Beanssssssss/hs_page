@@ -2,15 +2,16 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 interface TextProps extends React.HTMLAttributes<HTMLElement> {
-  variant?: 'small' | 'medium' | 'large' | 'heading1' | 'heading3' | 'heading4' | 'heading5' | 'heading6' | 'heading1Jumbo';
+  variant?: 'small' | 'medium' | 'large' | 'heading1' | 'heading2' | 'heading3' | 'heading4' | 'heading5' | 'heading6' | 'heading1Jumbo';
   as?: 'p' | 'span' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 const textVariants = {
-  small: 'text-[14px] font-normal leading-[1.4em] tracking-[-0.02em]',
+  small: 'text-[14px] font-normal leading-[1.7em] tracking-[-0.02em]',
   medium: 'text-[18px] font-normal leading-[1.4em] tracking-[-0.02em]',
   large: 'text-[20px] font-normal leading-[1.7em] tracking-[-0.02em]',
   heading1: 'text-[80px] font-black leading-[1em] tracking-[0em]',
+  heading2: 'text-[40px] font-extrabold leading-[1em] tracking-[0em]',
   heading3: 'text-[40px] font-semibold leading-[1.2em] tracking-[-0.04em]',
   heading4: 'text-[32px] font-semibold leading-[1.5em] tracking-[-0.02em]',
   heading5: 'text-[28px] font-normal leading-[1.1em] tracking-[-0.04em]',
@@ -20,13 +21,14 @@ const textVariants = {
 
 const fontFamilies = {
   small: 'font-inter',
-  medium: 'font-pretendard',
-  large: 'font-pretendard',
+  medium: 'font-inter',
+  large: 'font-inter',
   heading1: 'font-pretendard',
-  heading3: 'font-pretendard',
-  heading4: 'font-pretendard',
-  heading5: 'font-pretendard',
-  heading6: 'font-pretendard',
+  heading2: 'font-pretendard',
+  heading3: 'font-inter display',
+  heading4: 'font-inter display',
+  heading5: 'font-inter display',
+  heading6: 'font-inter display',
   heading1Jumbo: 'font-pretendard',
 };
 
