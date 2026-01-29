@@ -36,7 +36,7 @@ export function SloganSection() {
   return (
     <section
       ref={sectionRef}
-      className={`w-full flex flex-col justify-center items-start transition-all duration-1000 ease-out ${
+      className={`w-full flex flex-col justify-center items-center transition-all duration-1000 ease-out ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
       }`}
       style={{
@@ -64,14 +64,10 @@ export function SloganSection() {
           }}
         >
           <Text variant="heading2" as="h2" className="text-center">
-            Prompt the
-            <br />
-            Future,
+            "Prompt the Future,
             <br />
             <br />
-            Be the
-            <br />
-            Pioneer
+            Be the Pioneer"
           </Text>
         </div>
       </div>
