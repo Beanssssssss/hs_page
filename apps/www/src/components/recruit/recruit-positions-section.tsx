@@ -92,12 +92,11 @@ export function RecruitPositionsSection() {
             {positions.map((position, index) => (
               <div 
                 key={position.id} 
-                className={`w-full transition-all duration-700 ease-out ${
+                className={`w-full min-h-[380px] sm:min-h-[420px] md:min-h-[460px] transition-all duration-700 ease-out ${
                   visibleItems.includes(index) 
                     ? 'opacity-100 translate-y-0' 
                     : 'opacity-0 translate-y-8'
                 }`}
-                className="min-h-[380px] sm:min-h-[420px] md:min-h-[460px]"
               >
                 {/* Feature Box */}
                 <div
