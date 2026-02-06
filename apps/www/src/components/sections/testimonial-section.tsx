@@ -39,7 +39,7 @@ const testimonials = [
     id: 5,
     name: 'Laura Kim',
     role: 'Engineering Lead, Flow',
-    content: 'Draftr feels focused 🎯 no clutter.',
+    content: 'HateSlop은 집중된 커리큘럼과 실전 프로젝트가 좋아요 🎯',
     avatar: 'https://i.pravatar.cc/150?img=5',
   },
   {

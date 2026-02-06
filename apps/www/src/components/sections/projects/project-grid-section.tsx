@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ProjectCard } from './project-card';
+import { ProjectDetailModal } from './project-detail-modal';
 import { supabase } from '@/lib/supabase';
 import type { Project, ProjectType } from '@/types/project';
 import { usePageState } from '@/hooks/use-page-state';
@@ -33,6 +34,8 @@ export function ProjectGridSection() {
   const [loading, setLoading] = useState(true);
   const [gridVisible, setGridVisible] = useState(false);
   const [previousDisplayCount, setPreviousDisplayCount] = useState(6);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
 
   // 페이지 상태 관리 훅 사용
@@ -322,10 +325,21 @@ export function ProjectGridSection() {
                     index={shouldAnimate ? animationIndex : index}
                     shouldAnimate={shouldAnimate}
                     isNewCard={index >= previousDisplayCount}
+                    project={project}
+                    onOpenModal={(p) => {
+                      setSelectedProject(p);
+                      setModalOpen(true);
+                    }}
                   />
                 );
               })}
             </div>
+
+            <ProjectDetailModal
+              project={selectedProject}
+              open={modalOpen}
+              onOpenChange={setModalOpen}
+            />
 
             {displayedProjects.length < filteredProjects.length && (
               <div className="text-center">

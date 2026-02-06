@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { ProjectCard } from './projects/project-card';
+import { ProjectDetailModal } from './projects/project-detail-modal';
 import { supabase } from '@/lib/supabase';
 import type { Project } from '@/types/project';
 import Link from 'next/link';
@@ -15,6 +16,8 @@ export function RecentProjectsSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [cardsVisible, setCardsVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -200,12 +203,23 @@ export function RecentProjectsSection() {
                         generation={project.generations?.[0]?.name}
                         thumbnailUrl={project.thumbnail_url}
                         projectType={project.project_type}
+                        project={project}
+                        onOpenModal={(p) => {
+                          setSelectedProject(p);
+                          setModalOpen(true);
+                        }}
                       />
                     </div>
                   );
                 })}
               </div>
             </div>
+
+            <ProjectDetailModal
+              project={selectedProject}
+              open={modalOpen}
+              onOpenChange={setModalOpen}
+            />
 
             {/* Button: Dark Small (재사용) - 카드 바로 아래 배치 */}
             <div className={`text-center mt-6 transition-all duration-1000 ease-out ${

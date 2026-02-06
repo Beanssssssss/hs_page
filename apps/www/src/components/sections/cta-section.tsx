@@ -65,7 +65,11 @@ export function CTASection() {
             </Text>
 
             {/* Button Primary: Text Medium + Arrow in Circle */}
-            <Link href="#" target="_blank">
+            <Link
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeM1Yc7aXJuBbB6ju6G88sQUaa0Z1FWRtCjgTnVYLS8eUmprQ/viewform?usp=dialog"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button
                 variant="primary"
                 size="primary"

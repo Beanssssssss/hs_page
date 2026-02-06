@@ -44,8 +44,8 @@ export function RecruitHeroSection() {
             Recruit
           </Text>
           <Text variant="large" className="text-center text-gray-700">
-            At Draftr, we're <span className="font-semibold">building the next generation</span> of
-            design tools —
+            서강대학교 생성형 AI 미디어&테크 학회 HateSlop과 함께{' '}
+            <span className="font-semibold">다음 기수를</span> 만들어가요.
           </Text>
         </div>
       </div>

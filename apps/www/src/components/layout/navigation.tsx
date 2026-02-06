@@ -46,15 +46,22 @@ export function Navigation() {
           </div>
 
           {/* CTA Button - 오른쪽으로 이동 */}
-          <Button 
-            variant="dark" 
+          <Button
+            asChild
+            variant="dark"
             size="darkSmall"
             className="-mr-6"
             style={{
               background: 'linear-gradient(180deg, #101011 0%, rgb(43, 43, 44) 100%)'
             }}
           >
-            4기 신청하기
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeM1Yc7aXJuBbB6ju6G88sQUaa0Z1FWRtCjgTnVYLS8eUmprQ/viewform?usp=dialog"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              4기 신청하기
+            </a>
           </Button>
         </div>
       </div>

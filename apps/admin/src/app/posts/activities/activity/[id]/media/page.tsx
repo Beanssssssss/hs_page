@@ -295,8 +295,12 @@ export default function ActivityMediaPage() {
     <div className="space-y-8">
       {/* 헤더 */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">액티비티 미디어 관리</h1>
-
+        <div>
+          <h1 className="text-2xl font-bold">활동 미디어 추가 · 삭제 · 수정</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            이미지/영상 추가, 기존 미디어 수정·삭제, 썸네일 지정
+          </p>
+        </div>
         <Button
           variant="outline"
           onClick={() =>
@@ -310,7 +314,7 @@ export default function ActivityMediaPage() {
       {/* 새 미디어 추가 섹션 */}
       <div className="space-y-4 border rounded-lg p-4 bg-muted/30">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold">새 미디어 추가</h2>
+          <h2 className="font-semibold">미디어 추가</h2>
           <Input
             type="file"
             accept="image/*,video/*"
@@ -391,9 +395,9 @@ export default function ActivityMediaPage() {
         )}
       </div>
 
-      {/* 기존 미디어 */}
+      {/* 기존 미디어 (수정 · 삭제) */}
       <div className="space-y-4">
-        <h2 className="font-semibold">기존 미디어</h2>
+        <h2 className="font-semibold">기존 미디어 (수정 · 삭제)</h2>
 
         {mediaList.length === 0 && (
           <p className="text-muted-foreground">

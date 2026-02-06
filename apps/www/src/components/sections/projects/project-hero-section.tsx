@@ -46,7 +46,7 @@ export function ProjectHeroSection() {
           Project
         </h1>
         <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto">
-          Practical ideas and trends to help your software brand grow and stand out.
+          기수별 프로젝트와 결과물을 확인하세요.
         </p>
       </div>
     </section>

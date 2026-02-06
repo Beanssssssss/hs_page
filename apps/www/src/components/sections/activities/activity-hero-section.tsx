@@ -24,7 +24,7 @@ export function ActivityHeroSection() {
           Activity
         </h1>
         <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto">
-          Practical ideas and trends to help your software brand grow and stand out.
+          세션, 워크샵, MT 등 학회 활동을 만나보세요.
         </p>
       </div>
     </section>

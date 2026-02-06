@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/posts/projects", label: "프로젝트" },
+  { href: "/posts/activities", label: "활동 관리" },
   { href: "/posts/introduce", label: "소개" },
   { href: "/posts/recruit", label: "리크루팅" },
 ];
