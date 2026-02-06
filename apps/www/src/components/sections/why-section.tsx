@@ -20,7 +20,7 @@ const features = [
   },
   {
     id: 3,
-    image: '/image/networking.PNG',
+    image: '/image/networking.png',
     title: 'Networking',
     description: 'Work seamlessly with your team, get instant feedback.',
   },
