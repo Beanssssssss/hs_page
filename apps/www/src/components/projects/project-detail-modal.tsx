@@ -71,11 +71,11 @@ export function ProjectDetailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-[520px] max-h-[calc(100vh-4rem)] my-0 p-0 gap-0 border-0 shadow-xl rounded-2xl overflow-y-auto overflow-x-hidden bg-white">
+      <DialogContent className="w-[calc(100vw-1rem)] sm:w-[calc(100vw-2rem)] max-w-[520px] sm:max-w-[600px] md:max-w-[640px] max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)] my-0 p-0 gap-0 border-0 shadow-xl rounded-xl sm:rounded-2xl overflow-y-auto overflow-x-hidden bg-white">
         <DialogTitle className="sr-only">{project.title}</DialogTitle>
-        <div className="bg-white rounded-2xl">
+        <div className="bg-white rounded-xl sm:rounded-2xl">
           {/* 상단 이미지: 썸네일 + 미디어 이미지 슬라이더 (좌우 화살표) */}
-          <div className="relative w-full overflow-hidden rounded-t-2xl min-h-[60vh] bg-neutral-100">
+          <div className="relative w-full overflow-hidden rounded-t-xl sm:rounded-t-2xl min-h-[40vh] sm:min-h-[50vh] md:min-h-[55vh] lg:min-h-[60vh] bg-neutral-100">
             {imageList.length > 0 && (
               <>
                 {imageList.map((url, idx) => (
@@ -100,10 +100,10 @@ export function ProjectDetailModal({
                         e.stopPropagation();
                         goPrev();
                       }}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white transition-colors"
+                      className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-10 min-w-[44px] min-h-[44px] w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white transition-colors touch-manipulation"
                       aria-label="이전 이미지"
                     >
-                      <ChevronLeft className="w-5 h-5" />
+                      <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                     </button>
                     <button
                       type="button"
@@ -111,12 +111,12 @@ export function ProjectDetailModal({
                         e.stopPropagation();
                         goNext();
                       }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white transition-colors"
+                      className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-10 min-w-[44px] min-h-[44px] w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white transition-colors touch-manipulation"
                       aria-label="다음 이미지"
                     >
-                      <ChevronRight className="w-5 h-5" />
+                      <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
                     </button>
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 px-2 py-1 rounded-full bg-black/50 text-white text-xs font-medium">
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 px-2.5 py-1.5 rounded-full bg-black/50 text-white text-xs sm:text-sm font-medium">
                       {safeImageIndex + 1} / {imageList.length}
                     </div>
                   </>
@@ -125,16 +125,16 @@ export function ProjectDetailModal({
             )}
           </div>
 
-          <div className="px-6 pt-6 pb-8 md:pb-12">
+          <div className="px-4 pt-4 pb-6 sm:px-6 sm:pt-6 sm:pb-8 md:pb-12">
             {/* 프로젝트 이름 & 설명 */}
             <div className="flex flex-col gap-3 mb-4">
-              <h2 className="text-lg font-semibold text-neutral-900">
+              <h2 className="text-base sm:text-lg font-semibold text-neutral-900">
                 {project.title}
               </h2>
               {description && (
                 <div className="flex flex-col gap-1">
                   <p
-                    className="text-sm text-neutral-800 whitespace-pre-line"
+                    className="text-sm text-neutral-800 whitespace-pre-line leading-relaxed"
                     style={
                       !descriptionExpanded && isDescriptionLong
                         ? { display: '-webkit-box', WebkitLineClamp: DESCRIPTION_PREVIEW_LINES, WebkitBoxOrient: 'vertical' as const, overflow: 'hidden' }

@@ -31,23 +31,23 @@ export function Navigation() {
       className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200"
       style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
     >
-      <div className="flex items-center justify-between h-14 min-[480px]:h-16 sm:h-16 md:h-[72px] lg:h-20 px-3 min-[480px]:px-4 sm:px-5 md:px-6 max-w-[1200px] mx-auto">
+      <div className="relative flex items-center justify-between h-14 min-[480px]:h-16 sm:h-16 md:h-[72px] lg:h-20 w-full pl-3 pr-3 min-[480px]:pl-4 min-[480px]:pr-4 sm:pl-5 sm:pr-5 md:pl-6 md:pr-6">
         <Link
           href="/"
-          className="flex items-center shrink-0 w-16 h-7 min-[480px]:w-20 min-[480px]:h-8 sm:w-[100px] sm:h-9 md:w-[116px] md:h-10"
+          className="flex items-center shrink-0 h-full min-w-[100px] w-32 min-[480px]:w-40 sm:w-48 md:w-56 lg:w-64"
           aria-label="HateSlop 홈"
         >
           <Image
-            src="/image/logo_black.svg"
+            src="/image/logo_purple_genAI.svg"
             alt="HateSlop Logo"
-            width={116}
-            height={40}
+            width={256}
+            height={80}
             className="w-full h-full object-contain object-left"
           />
         </Link>
 
-        {/* Desktop: Nav Links + CTA (md 이상에서 링크, lg 이상에서 CTA 버튼) */}
-        <div className="hidden md:flex items-center gap-6 lg:gap-8 xl:gap-[85px] flex-1 justify-center">
+        {/* Desktop: Nav Links - 화면 정중앙 고정 */}
+        <div className="hidden md:flex absolute left-1/2 top-0 bottom-0 -translate-x-1/2 items-center gap-6 lg:gap-8 xl:gap-[85px]">
           {navLinks.map((link) => (
             <Link
               key={link.href}
