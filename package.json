@@ -1,0 +1,20 @@
+{
+  "name": "my-blog-monorepo",
+  "private": true,
+  "scripts": {
+    "dev:www": "pnpm --filter www dev",
+    "dev:admin": "pnpm --filter admin dev",
+    "dev": "pnpm --recursive --parallel dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.89.0",
+    "dotenv": "^17.2.3",
+    "framer-motion": "^12.33.0",
+    "react-markdown": "^10.1.0"
+  }
+}
